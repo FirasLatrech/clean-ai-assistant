@@ -1,5 +1,5 @@
 
-// Claude API key
+// Claude API key - Note: In production, this should be handled securely
 const CLAUDE_API_KEY = "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";
 
 export interface EnhancePromptOptions {
@@ -14,37 +14,141 @@ export async function enhancePromptWithClaude({
   advancedMode = false,
 }: EnhancePromptOptions): Promise<string> {
   try {
-    const mockResponses = {
-      default: "Your prompt has been enhanced with more specificity and clarity. I've added structure and key details to make it more effective.",
-      app: "I want to build a mobile app that [specific purpose/function]. The app should include the following key features: [list 3-5 essential features]. The target audience is [specific demographic]. The app should have a [specific design style] interface and prioritize [specific qualities like speed, simplicity, etc.]. I need detailed guidance on the tech stack, development approach, and potential challenges to consider during development.",
-      website: "I need to create a website for [specific purpose]. The website should include these essential pages: [list pages]. Key functionality requirements include [specific functions]. The target audience is [specific demographic]. The design should be [specific style] with an emphasis on [specific qualities like responsiveness, accessibility, etc.]. Please provide recommendations for the tech stack and development approach.",
-      essay: "Please help me write a comprehensive essay about [specific topic]. The essay should cover these key aspects: [list main points]. It should be approximately [word count] words and written in a [specific tone/style]. The intended audience is [specific readers]. Please include relevant research, examples, and counter-arguments where appropriate. The essay should follow [specific structure or format] and maintain academic integrity throughout."
-    };
-
-    // In a real extension, we would use the Claude API
-    // For now, let's simulate a response to avoid CORS issues
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
+    // For the Chrome extension, we'll use mock responses to avoid CORS issues
+    // In production, this would use a background script to make the actual API call
     
-    // Choose different mock responses based on prompt content
-    let response = mockResponses.default;
-    if (prompt.toLowerCase().includes("app")) {
-      response = mockResponses.app;
-    } else if (prompt.toLowerCase().includes("website")) {
-      response = mockResponses.website;
-    } else if (prompt.toLowerCase().includes("essay")) {
-      response = mockResponses.essay;
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Generate genius-level prompts based on the input
+    if (prompt.trim().length === 0) {
+      return "Please enter a prompt to enhance.";
     }
     
-    // If using advanced mode, add more detailed guidance
+    // Extract key topics from the prompt
+    const topics = prompt.split(/[.,;!?]/)
+      .map(p => p.trim())
+      .filter(p => p.length > 3);
+    
+    const promptType = detectPromptType(prompt);
+    
+    let enhancedPrompt = "";
+    
+    // Expert prompt construction based on type
+    switch (promptType) {
+      case 'creative':
+        enhancedPrompt = createCreativePrompt(prompt, advancedMode);
+        break;
+      case 'technical':
+        enhancedPrompt = createTechnicalPrompt(prompt, advancedMode);
+        break;
+      case 'business':
+        enhancedPrompt = createBusinessPrompt(prompt, advancedMode);
+        break;
+      case 'educational':
+        enhancedPrompt = createEducationalPrompt(prompt, advancedMode);
+        break;
+      default:
+        enhancedPrompt = createGeneralPrompt(prompt, advancedMode);
+    }
+    
+    // Apply temperature-based variations
+    if (temperature > 0.7) {
+      enhancedPrompt += "\n\nEXPLORE UNCONVENTIONAL ANGLES: Consider unexpected perspectives and creative solutions that challenge standard approaches.";
+    }
+    
     if (advancedMode) {
-      response += "\n\nAdditional considerations:\n• Be consistent in tone throughout\n• Consider including specific examples to illustrate key points\n• Address potential objections or alternative perspectives\n• Structure your content with clear headings and logical flow\n• Conclude with actionable next steps or key takeaways";
+      enhancedPrompt += "\n\nADVANCED CONSIDERATIONS:\n• Approach this from multiple perspectives\n• Consider both immediate and long-term implications\n• Address potential counterarguments or limitations\n• Incorporate relevant frameworks, methodologies, or research\n• Suggest specific metrics for evaluating success";
     }
     
-    return response;
+    return enhancedPrompt;
   } catch (error) {
     console.error("Error enhancing prompt:", error);
     throw error;
   }
+}
+
+// Helper functions for prompt enhancement
+
+function detectPromptType(prompt: string): string {
+  const lowercase = prompt.toLowerCase();
+  
+  if (lowercase.includes('create') || lowercase.includes('design') || lowercase.includes('story') || 
+      lowercase.includes('novel') || lowercase.includes('art') || lowercase.includes('music')) {
+    return 'creative';
+  }
+  
+  if (lowercase.includes('code') || lowercase.includes('program') || lowercase.includes('develop') || 
+      lowercase.includes('build') || lowercase.includes('technical') || lowercase.includes('algorithm')) {
+    return 'technical';
+  }
+  
+  if (lowercase.includes('business') || lowercase.includes('marketing') || lowercase.includes('strategy') || 
+      lowercase.includes('sales') || lowercase.includes('customer') || lowercase.includes('product')) {
+    return 'business';
+  }
+  
+  if (lowercase.includes('teach') || lowercase.includes('explain') || lowercase.includes('learn') || 
+      lowercase.includes('educational') || lowercase.includes('concept') || lowercase.includes('understand')) {
+    return 'educational';
+  }
+  
+  return 'general';
+}
+
+function createGeneralPrompt(prompt: string, advanced: boolean): string {
+  const base = `${prompt}\n\nPlease provide a comprehensive response that:
+1. Outlines the key aspects and dimensions of this topic
+2. Explores different perspectives and viewpoints
+3. Provides concrete examples and specific details
+4. Offers actionable insights and practical applications
+5. Considers potential challenges and how to address them`;
+  
+  return base;
+}
+
+function createCreativePrompt(prompt: string, advanced: boolean): string {
+  return `I need a creative masterpiece on: ${prompt}\n\nPlease develop this with:
+1. Rich, evocative language that engages multiple senses
+2. A distinct narrative voice or perspective that fits the content
+3. Innovative structure with natural progression and flow
+4. Meaningful themes that resonate with universal human experiences
+5. Creative techniques like metaphor, imagery, and symbolism
+6. Emotional depth that connects with the audience
+7. Original ideas that avoid clichés and predictable elements`;
+}
+
+function createTechnicalPrompt(prompt: string, advanced: boolean): string {
+  return `I need a technical solution for: ${prompt}\n\nPlease provide:
+1. A clear problem statement with technical specifications and requirements
+2. A systematic analysis of possible approaches and their trade-offs
+3. A detailed implementation strategy with architecture overview
+4. Specific technologies, tools, or frameworks with justification
+5. Consideration of performance, scalability, security, and maintainability
+6. Potential challenges and mitigation strategies
+7. Testing and validation approaches`;
+}
+
+function createBusinessPrompt(prompt: string, advanced: boolean): string {
+  return `I need a business strategy for: ${prompt}\n\nPlease develop:
+1. Market analysis with target audience definition and competitive landscape
+2. Clear value proposition and unique selling points
+3. Business model with revenue streams and cost structure
+4. Go-to-market strategy and customer acquisition approach
+5. Key performance indicators and success metrics
+6. Risk assessment and contingency planning
+7. Implementation roadmap with short and long-term objectives`;
+}
+
+function createEducationalPrompt(prompt: string, advanced: boolean): string {
+  return `I need to learn about: ${prompt}\n\nPlease provide:
+1. A clear explanation of fundamental concepts using accessible language
+2. Logical organization progressing from basic to advanced understanding
+3. Concrete examples and real-world applications that illustrate key points
+4. Analogies or metaphors that bridge familiar and unfamiliar concepts
+5. Visual descriptions or diagrams where appropriate
+6. Common misconceptions and their corrections
+7. Practical exercises or applications to reinforce understanding`;
 }
 
 export async function savePromptHistory(original: string, enhanced: string) {
