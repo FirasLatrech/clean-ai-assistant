@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,7 +31,6 @@ const Index = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load conversation history on component mount
     try {
       const history = getPromptHistory();
       const formattedMessages: Message[] = history.flatMap((item: any, index: number) => [
@@ -57,7 +55,6 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Scroll to bottom of messages when they change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -101,7 +98,6 @@ const Index = () => {
 
     setIsLoading(true);
     
-    // Add user message to conversation
     const userMessage: Message = {
       id: `user-${Date.now()}`,
       type: 'user',
@@ -118,7 +114,6 @@ const Index = () => {
         advancedMode: advancedMode
       });
       
-      // Add assistant message to conversation
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,
         type: 'assistant',
@@ -136,7 +131,6 @@ const Index = () => {
         description: "Your prompt has been transformed into genius-level writing!",
       });
       
-      // Clear input after successful enhancement
       if (activeTab === "conversation") {
         setInputPrompt("");
       }
@@ -205,8 +199,12 @@ const Index = () => {
               <ZapIcon className="h-5 w-5 text-amber-500" />
               <CardTitle className="text-lg font-medium">Genius Prompt Enhancer</CardTitle>
             </div>
-            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs">
-              Powered by Claude AI
+            <Badge 
+              variant="outline" 
+              className="bg-amber-50 text-amber-700 border-amber-200 text-xs hover:bg-amber-100 cursor-pointer"
+              onClick={() => window.open("https://www.linkedin.com/in/firaslatrech/", "_blank")}
+            >
+              Created with love by Firas Latrach
             </Badge>
           </div>
         </CardHeader>
