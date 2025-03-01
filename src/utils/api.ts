@@ -1,6 +1,20 @@
+// Add Chrome extension types
+declare global {
+  interface Window {
+    chrome?: {
+      storage: {
+        local: {
+          get: (keys: string[], callback: (result: any) => void) => void;
+          set: (items: object, callback?: () => void) => void;
+        };
+      };
+    };
+  }
+}
 
-// Claude API key - Note: In production, this should be handled securely
-const CLAUDE_API_KEY = "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";
+// Claude API key - Using environment variable for security
+// In production, this should be handled through a secure backend service
+const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY || "";
 
 export interface EnhancePromptOptions {
   prompt: string;
@@ -16,24 +30,24 @@ export async function enhancePromptWithClaude({
   try {
     // For the Chrome extension, we'll use mock responses to avoid CORS issues
     // In production, this would use a background script to make the actual API call
-    
+
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Generate genius-level prompts based on the input
     if (prompt.trim().length === 0) {
       return "Please enter a prompt to enhance.";
     }
-    
+
     // Extract key topics from the prompt
     const topics = prompt.split(/[.,;!?]/)
       .map(p => p.trim())
       .filter(p => p.length > 3);
-    
+
     const promptType = detectPromptType(prompt);
-    
+
     let enhancedPrompt = "";
-    
+
     // Expert prompt construction based on type
     switch (promptType) {
       case 'creative':
@@ -51,16 +65,16 @@ export async function enhancePromptWithClaude({
       default:
         enhancedPrompt = createGeneralPrompt(prompt, advancedMode);
     }
-    
+
     // Apply temperature-based variations
     if (temperature > 0.7) {
       enhancedPrompt += "\n\nEXPLORE UNCONVENTIONAL ANGLES: Consider unexpected perspectives and creative solutions that challenge standard approaches.";
     }
-    
+
     if (advancedMode) {
       enhancedPrompt += "\n\nADVANCED CONSIDERATIONS:\n• Approach this from multiple perspectives\n• Consider both immediate and long-term implications\n• Address potential counterarguments or limitations\n• Incorporate relevant frameworks, methodologies, or research\n• Suggest specific metrics for evaluating success";
     }
-    
+
     return enhancedPrompt;
   } catch (error) {
     console.error("Error enhancing prompt:", error);
@@ -72,27 +86,27 @@ export async function enhancePromptWithClaude({
 
 function detectPromptType(prompt: string): string {
   const lowercase = prompt.toLowerCase();
-  
-  if (lowercase.includes('create') || lowercase.includes('design') || lowercase.includes('story') || 
+
+  if (lowercase.includes('create') || lowercase.includes('design') || lowercase.includes('story') ||
       lowercase.includes('novel') || lowercase.includes('art') || lowercase.includes('music')) {
     return 'creative';
   }
-  
-  if (lowercase.includes('code') || lowercase.includes('program') || lowercase.includes('develop') || 
+
+  if (lowercase.includes('code') || lowercase.includes('program') || lowercase.includes('develop') ||
       lowercase.includes('build') || lowercase.includes('technical') || lowercase.includes('algorithm')) {
     return 'technical';
   }
-  
-  if (lowercase.includes('business') || lowercase.includes('marketing') || lowercase.includes('strategy') || 
+
+  if (lowercase.includes('business') || lowercase.includes('marketing') || lowercase.includes('strategy') ||
       lowercase.includes('sales') || lowercase.includes('customer') || lowercase.includes('product')) {
     return 'business';
   }
-  
-  if (lowercase.includes('teach') || lowercase.includes('explain') || lowercase.includes('learn') || 
+
+  if (lowercase.includes('teach') || lowercase.includes('explain') || lowercase.includes('learn') ||
       lowercase.includes('educational') || lowercase.includes('concept') || lowercase.includes('understand')) {
     return 'educational';
   }
-  
+
   return 'general';
 }
 
@@ -103,7 +117,7 @@ function createGeneralPrompt(prompt: string, advanced: boolean): string {
 3. Provides concrete examples and specific details
 4. Offers actionable insights and practical applications
 5. Considers potential challenges and how to address them`;
-  
+
   return base;
 }
 
@@ -153,27 +167,52 @@ function createEducationalPrompt(prompt: string, advanced: boolean): string {
 
 export async function savePromptHistory(original: string, enhanced: string) {
   try {
-    // In a real extension, you would use chrome.storage.local
-    const currentHistory = getPromptHistory();
-    localStorage.setItem(
-      "promptHistory",
-      JSON.stringify([
-        ...currentHistory,
-        {
-          original,
-          enhanced,
-          timestamp: new Date().toISOString(),
-        },
-      ])
-    );
+    // Use chrome.storage.local for Chrome extension
+    if (typeof window !== 'undefined' && window.chrome && window.chrome.storage) {
+      const currentHistory = await getPromptHistory();
+      window.chrome.storage.local.set({
+        promptHistory: [
+          ...currentHistory,
+          {
+            original,
+            enhanced,
+            timestamp: new Date().toISOString(),
+          },
+        ]
+      });
+    } else {
+      // Fallback to localStorage for web version
+      const currentHistory = await getPromptHistory();
+      localStorage.setItem(
+        "promptHistory",
+        JSON.stringify([
+          ...currentHistory,
+          {
+            original,
+            enhanced,
+            timestamp: new Date().toISOString(),
+          },
+        ])
+      );
+    }
   } catch (error) {
     console.error("Error saving prompt history:", error);
   }
 }
 
-export function getPromptHistory() {
+export async function getPromptHistory(): Promise<any[]> {
   try {
-    return JSON.parse(localStorage.getItem("promptHistory") || "[]");
+    // Use chrome.storage.local for Chrome extension
+    if (typeof window !== 'undefined' && window.chrome && window.chrome.storage) {
+      return new Promise((resolve) => {
+        window.chrome.storage.local.get(['promptHistory'], (result) => {
+          resolve(result.promptHistory || []);
+        });
+      });
+    } else {
+      // Fallback to localStorage for web version
+      return JSON.parse(localStorage.getItem("promptHistory") || "[]");
+    }
   } catch (error) {
     console.error("Error getting prompt history:", error);
     return [];

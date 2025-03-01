@@ -1,9 +1,8 @@
-
 {
   "manifest_version": 3,
-  "name": "Prompt Enhancer",
+  "name": "Genius Prompt Enhancer",
   "version": "1.0.0",
-  "description": "Enhance your prompts with Claude AI",
+  "description": "Transform your prompts into genius-level writing with AI assistance",
   "action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -23,5 +22,9 @@
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
-  }
+  },
+  "author": "Firas Latrach",
+  "homepage_url": "https://www.linkedin.com/in/firaslatrech/",
+  "offline_enabled": true,
+  "short_name": "PromptGenius"
 }

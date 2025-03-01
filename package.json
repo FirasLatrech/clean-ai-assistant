@@ -8,7 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "package": "npm run build && cd dist && zip -r ../genius-prompt-enhancer.zip *"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
