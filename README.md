@@ -1,69 +1,69 @@
-# Welcome to your Lovable project
 
-## Project info
+# Prompt Enhancer Chrome Extension
 
-**URL**: https://lovable.dev/projects/4abe6843-2a33-410d-9e78-df8a19a2e144
+A beautiful Chrome extension that enhances your prompts using Claude AI.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Clean, minimalist UI inspired by modern design principles
+- Enhance prompts with Claude AI
+- Adjust creativity level with a slider
+- Advanced mode for more detailed enhancements
+- Copy enhanced prompts to clipboard
+- Smooth animations and transitions
 
-**Use Lovable**
+## Installation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4abe6843-2a33-410d-9e78-df8a19a2e144) and start prompting.
+### Development Mode
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Clone this repository
+2. Run `npm install` to install dependencies
+3. Run `npm run build` to build the extension
+4. Open Chrome and navigate to `chrome://extensions/`
+5. Enable "Developer mode" in the top right corner
+6. Click "Load unpacked" and select the `dist` folder from this project
+7. The extension should now be installed and visible in your Chrome toolbar
 
-**Use your preferred IDE**
+### Production Mode
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Build the extension as described above
+2. Package the `dist` folder as a ZIP file
+3. Submit to the Chrome Web Store for review
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Usage
 
-Follow these steps:
+1. Click the extension icon in your Chrome toolbar
+2. Enter the prompt you want to enhance in the text area
+3. Adjust the creativity level using the slider (optional)
+4. Toggle advanced mode for more detailed enhancements (optional)
+5. Click "Enhance Prompt" to generate an enhanced version
+6. Copy the enhanced prompt to your clipboard with the "Copy" button
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Development
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+This project uses:
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui components
+- Claude AI API
 
-# Step 3: Install the necessary dependencies.
-npm i
+To start development:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Building for Production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+The built extension will be in the `dist` folder.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Notes
 
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4abe6843-2a33-410d-9e78-df8a19a2e144) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+- This extension requires an internet connection to work
+- API calls to Claude AI are made directly from the extension
+- The extension requires the "clipboardWrite" permission to copy enhanced prompts to your clipboard
