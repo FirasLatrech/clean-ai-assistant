@@ -1,0 +1,17 @@
+# Extension Icons
+
+This directory should contain the following icon files:
+- icon-16.png (16x16 pixels)
+- icon-48.png (48x48 pixels)
+- icon-128.png (128x128 pixels)
+
+These icons should represent your "Genius Prompt Enhancer" application.
+You can create these icons using any image editing software like Photoshop, GIMP, or online tools like Canva.
+
+The icons should be:
+- Clear and recognizable even at small sizes
+- Consistent with your application's branding
+- Properly sized according to the filenames
+- Saved in PNG format with transparency
+
+Once created, place them in this directory and remove this placeholder file.

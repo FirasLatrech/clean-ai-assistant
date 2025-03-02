@@ -230,19 +230,19 @@ const Index = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-zinc-50 p-6 animate-fade-in">
-            <Card className="w-full max-w-4xl shadow-lg border-0 overflow-hidden backdrop-blur-sm bg-white/90 animate-slide-up">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-zinc-50 p-0 animate-fade-in">
+            <Card className="w-full min-w-[500px] max-w-[800px] h-[800px] shadow-lg border-0 overflow-hidden backdrop-blur-sm bg-white/90 animate-slide-up flex flex-col">
                 <CardHeader className="pb-4 border-b bg-amber-50/50">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <ZapIcon className="h-5 w-5 text-amber-500" />
-                            <CardTitle className="text-lg font-medium">
+                            <ZapIcon className="h-6 w-6 text-amber-500" />
+                            <CardTitle className="text-xl font-medium">
                                 Genius Prompt Enhancer
                             </CardTitle>
                         </div>
                         <Badge
                             variant="outline"
-                            className="bg-amber-50 text-amber-700 border-amber-200 text-xs hover:bg-amber-100 cursor-pointer"
+                            className="bg-amber-50 text-amber-700 border-amber-200 text-sm hover:bg-amber-100 cursor-pointer"
                             onClick={() =>
                                 window.open(
                                     "https://www.linkedin.com/in/firaslatrech/",
@@ -254,7 +254,7 @@ const Index = () => {
                         </Badge>
                     </div>
                 </CardHeader>
-                <CardContent className="pt-6 space-y-6">
+                <CardContent className="pt-6 space-y-6 flex-grow overflow-y-auto">
                     <Tabs
                         defaultValue="conversation"
                         value={activeTab}
@@ -291,15 +291,15 @@ const Index = () => {
 
                     {activeTab === "conversation" ? (
                         <div className="space-y-4">
-                            <div className="border rounded-lg bg-zinc-50/80 h-[320px] overflow-y-auto p-4 space-y-4">
+                            <div className="border rounded-lg bg-zinc-50/80 h-[380px] overflow-y-auto p-4 space-y-4">
                                 {messages.length === 0 ? (
-                                    <div className="flex flex-col items-center justify-center h-full text-zinc-400 space-y-2">
-                                        <MessageSquare className="h-12 w-12 opacity-20" />
-                                        <p>
+                                    <div className="flex flex-col items-center justify-center h-full text-zinc-400 space-y-3">
+                                        <MessageSquare className="h-16 w-16 opacity-20" />
+                                        <p className="text-base">
                                             Your conversation with Claude will
                                             appear here.
                                         </p>
-                                        <p className="text-xs">
+                                        <p className="text-sm">
                                             Ask anything to get genius-level
                                             prompt enhancements!
                                         </p>
@@ -312,10 +312,10 @@ const Index = () => {
                                                 message.type === "user"
                                                     ? "justify-end"
                                                     : "justify-start"
-                                            }`}
+                                            } my-3`}
                                         >
                                             <div
-                                                className={`max-w-[80%] rounded-lg p-3 ${
+                                                className={`max-w-[85%] rounded-lg p-4 ${
                                                     message.type === "user"
                                                         ? "bg-amber-500 text-white"
                                                         : "bg-zinc-200 text-zinc-800"
@@ -325,7 +325,7 @@ const Index = () => {
                                                     {message.content}
                                                 </div>
                                                 <div
-                                                    className={`text-xs mt-1 ${
+                                                    className={`text-xs mt-2 ${
                                                         message.type === "user"
                                                             ? "text-amber-100"
                                                             : "text-zinc-500"
@@ -357,13 +357,13 @@ const Index = () => {
                                 <div ref={messagesEndRef} />
                             </div>
 
-                            <div className="flex items-end gap-2">
+                            <div className="flex items-end gap-3">
                                 <div className="flex-grow space-y-2">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-2">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center space-x-3">
                                             <Label
                                                 htmlFor="creativity"
-                                                className="text-xs text-zinc-500"
+                                                className="text-sm text-zinc-600"
                                             >
                                                 Creativity
                                             </Label>
@@ -373,16 +373,16 @@ const Index = () => {
                                                 onValueChange={setCreativity}
                                                 max={1}
                                                 step={0.01}
-                                                className="w-24 [&>span]:bg-amber-500"
+                                                className="w-32 [&>span]:bg-amber-500"
                                             />
-                                            <span className="text-xs text-zinc-500">
+                                            <span className="text-sm text-zinc-600 font-medium">
                                                 {Math.round(
                                                     creativity[0] * 100
                                                 )}
                                                 %
                                             </span>
                                         </div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center space-x-3">
                                             <Switch
                                                 id="advanced-mode"
                                                 checked={advancedMode}
@@ -393,7 +393,7 @@ const Index = () => {
                                             />
                                             <Label
                                                 htmlFor="advanced-mode"
-                                                className="text-xs text-zinc-500"
+                                                className="text-sm text-zinc-600"
                                             >
                                                 Advanced
                                             </Label>
@@ -405,7 +405,7 @@ const Index = () => {
                                             setInputPrompt(e.target.value)
                                         }
                                         placeholder="Type your prompt here and let our AI transform it into genius-level writing..."
-                                        className="min-h-[80px] resize-none border-zinc-200 focus:border-amber-500 focus:ring-amber-500 transition-all"
+                                        className="min-h-[90px] resize-none border-zinc-200 focus:border-amber-500 focus:ring-amber-500 transition-all text-base"
                                         onKeyDown={(e) => {
                                             if (
                                                 e.key === "Enter" &&
@@ -420,22 +420,22 @@ const Index = () => {
                                 <Button
                                     onClick={enhancePrompt}
                                     disabled={isLoading}
-                                    className="bg-amber-500 hover:bg-amber-600 text-white h-[80px] px-4"
+                                    className="bg-amber-500 hover:bg-amber-600 text-white h-[90px] px-5"
                                 >
                                     {isLoading ? (
-                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                        <Loader2 className="h-6 w-6 animate-spin" />
                                     ) : (
-                                        <Send className="h-5 w-5" />
+                                        <Send className="h-6 w-6" />
                                     )}
                                 </Button>
                             </div>
 
-                            <div className="flex justify-between">
+                            <div className="flex justify-between mt-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
                                     onClick={clearConversation}
-                                    className="text-zinc-600 border-zinc-300 hover:bg-zinc-100 text-xs"
+                                    className="text-zinc-600 border-zinc-300 hover:bg-zinc-100 text-sm py-2 px-3"
                                     disabled={
                                         messages.length === 0 || isLoading
                                     }
@@ -445,18 +445,18 @@ const Index = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <Label
                                     htmlFor="input-prompt"
-                                    className="text-sm font-medium text-zinc-700"
+                                    className="text-base font-medium text-zinc-700"
                                 >
                                     Your Prompt
                                 </Label>
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-3">
                                     <Label
                                         htmlFor="advanced-mode"
-                                        className="text-xs text-zinc-500"
+                                        className="text-sm text-zinc-600"
                                     >
                                         Advanced Mode
                                     </Label>
@@ -473,15 +473,15 @@ const Index = () => {
                                 value={inputPrompt}
                                 onChange={(e) => setInputPrompt(e.target.value)}
                                 placeholder="Enter your prompt here and let our AI transform it into genius-level writing..."
-                                className="min-h-[120px] resize-none border-zinc-200 focus:border-amber-500 focus:ring-amber-500 transition-all"
+                                className="min-h-[130px] resize-none border-zinc-200 focus:border-amber-500 focus:ring-amber-500 transition-all text-base"
                             />
 
-                            <div className="space-y-3">
+                            <div className="space-y-3 pt-2">
                                 <div className="flex items-center justify-between">
-                                    <Label className="text-sm font-medium text-zinc-700">
+                                    <Label className="text-base font-medium text-zinc-700">
                                         Creativity Level
                                     </Label>
-                                    <span className="text-xs text-zinc-500">
+                                    <span className="text-sm font-medium text-zinc-600">
                                         {Math.round(creativity[0] * 100)}%
                                     </span>
                                 </div>
@@ -492,7 +492,7 @@ const Index = () => {
                                     step={0.01}
                                     className="[&>span]:bg-amber-500"
                                 />
-                                <div className="flex justify-between text-xs text-zinc-400">
+                                <div className="flex justify-between text-sm text-zinc-500 pt-1">
                                     <span>Precise</span>
                                     <span>Balanced</span>
                                     <span>Creative</span>
@@ -500,12 +500,13 @@ const Index = () => {
                             </div>
 
                             {enhancedPrompt && (
-                                <div className="space-y-3 pt-3 border-t animate-fade-in">
+                                <div className="space-y-3 pt-4 border-t animate-fade-in">
                                     <div className="flex items-center justify-between">
                                         <Label
                                             htmlFor="enhanced-prompt"
-                                            className="text-sm font-medium text-zinc-700"
+                                            className="text-base font-medium text-zinc-700 flex items-center gap-2"
                                         >
+                                            <Sparkles className="h-4 w-4 text-amber-500" />
                                             Genius-Level Prompt
                                         </Label>
                                         <Button
@@ -514,16 +515,16 @@ const Index = () => {
                                             }
                                             variant="ghost"
                                             size="sm"
-                                            className="h-8 text-xs hover:bg-zinc-100"
+                                            className="h-9 text-sm hover:bg-zinc-100"
                                         >
                                             {copied ? (
                                                 <>
-                                                    <Check className="mr-1 h-3.5 w-3.5 text-green-500" />{" "}
+                                                    <Check className="mr-1 h-4 w-4 text-green-500" />{" "}
                                                     Copied
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Copy className="mr-1 h-3.5 w-3.5" />{" "}
+                                                    <Copy className="mr-1 h-4 w-4" />{" "}
                                                     Copy All
                                                 </>
                                             )}
@@ -533,7 +534,7 @@ const Index = () => {
                                         id="enhanced-prompt"
                                         value={enhancedPrompt}
                                         readOnly
-                                        className="min-h-[160px] resize-none bg-amber-50/30 border-zinc-200 text-zinc-800"
+                                        className="min-h-[180px] resize-none bg-amber-50/50 border-amber-200 text-zinc-800 text-base"
                                     />
                                 </div>
                             )}
@@ -541,30 +542,30 @@ const Index = () => {
                     )}
                 </CardContent>
                 {activeTab !== "conversation" && (
-                    <CardFooter className="flex justify-between pt-2 border-t bg-zinc-50/80">
+                    <CardFooter className="flex justify-between pt-3 pb-3 border-t bg-zinc-50/80">
                         <Button
                             variant="outline"
-                            size="sm"
+                            size="default"
                             onClick={resetForm}
                             className="text-zinc-600 border-zinc-300 hover:bg-zinc-100"
                             disabled={isLoading}
                         >
-                            <RefreshCw className="mr-2 h-3.5 w-3.5" />
+                            <RefreshCw className="mr-2 h-4 w-4" />
                             Reset
                         </Button>
                         <Button
                             onClick={enhancePrompt}
                             disabled={isLoading}
-                            className="bg-amber-500 hover:bg-amber-600 text-white button-glow"
+                            className="bg-amber-500 hover:bg-amber-600 text-white button-glow px-4 py-2 text-base"
                         >
                             {isLoading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                                     Enhancing...
                                 </>
                             ) : (
                                 <>
-                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    <Sparkles className="mr-2 h-5 w-5" />
                                     Transform to Genius
                                 </>
                             )}

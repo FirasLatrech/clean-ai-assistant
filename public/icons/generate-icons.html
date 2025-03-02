@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icons</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Icon Generator</h1>
+    <p>Click the buttons below to generate and download icons for your extension.</p>
+
+    <div>
+        <canvas id="canvas16" width="16" height="16"></canvas>
+        <canvas id="canvas48" width="48" height="48"></canvas>
+        <canvas id="canvas128" width="128" height="128"></canvas>
+    </div>
+
+    <button id="generateIcons">Generate Icons</button>
+    <button id="download16">Download 16x16</button>
+    <button id="download48">Download 48x48</button>
+    <button id="download128">Download 128x128</button>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#4285f4';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Letter "P"
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.6}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('P', size/2, size/2);
+
+            return canvas;
+        }
+
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        document.getElementById('generateIcons').addEventListener('click', function() {
+            drawIcon(document.getElementById('canvas16'), 16);
+            drawIcon(document.getElementById('canvas48'), 48);
+            drawIcon(document.getElementById('canvas128'), 128);
+        });
+
+        document.getElementById('download16').addEventListener('click', function() {
+            downloadCanvas(document.getElementById('canvas16'), 'icon-16.png');
+        });
+
+        document.getElementById('download48').addEventListener('click', function() {
+            downloadCanvas(document.getElementById('canvas48'), 'icon-48.png');
+        });
+
+        document.getElementById('download128').addEventListener('click', function() {
+            downloadCanvas(document.getElementById('canvas128'), 'icon-128.png');
+        });
+
+        // Auto-generate on load
+        window.onload = function() {
+            drawIcon(document.getElementById('canvas16'), 16);
+            drawIcon(document.getElementById('canvas48'), 48);
+            drawIcon(document.getElementById('canvas128'), 128);
+        };
+    </script>
+</body>
+</html>

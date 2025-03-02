@@ -10,6 +10,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
+    // Set base to './' to use relative paths in the build output
+    base: './',
     server: {
       host: "::",
       port: 8080,
